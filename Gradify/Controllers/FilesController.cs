@@ -1,5 +1,8 @@
 ﻿using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Gradify.Controllers
 {
@@ -21,15 +24,16 @@ namespace Gradify.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+        public async Task<IActionResult> UploadFile(IFormFile file, string folder)
         {
             if (file == null || file.Length == 0)
             {
                 ViewBag.Message = "No file uploaded.";
-                return View("Index");
+                var allFiles = await ListFilesAsync();
+                return View("Index", allFiles);
             }
 
-            var objectName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var objectName = !string.IsNullOrEmpty(folder) ? $"{folder}/{file.FileName}" : file.FileName;
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
@@ -38,17 +42,47 @@ namespace Gradify.Controllers
             }
 
             ViewBag.Message = $"File uploaded successfully: {objectName}";
-            var files = await ListFilesAsync();
-            return View("Index", files);
+            var filesList = await ListFilesAsync();
+            return View("Index", filesList);
         }
 
-        [HttpGet("Files/Download/{objectName}")]
+        [HttpPost]
+        public async Task<IActionResult> CreateFolder(string folderName)
+        {
+            if (string.IsNullOrEmpty(folderName))
+            {
+                ViewBag.Message = "Folder name cannot be empty.";
+                var allFiles = await ListFilesAsync();
+                return View("Index", allFiles);
+            }
+
+            var objectName = $"{folderName}/";
+            using (var stream = new MemoryStream(new byte[0]))
+            {
+                await _storageClient.UploadObjectAsync(_bucketName, objectName, "application/x-directory", stream);
+            }
+
+            ViewBag.Message = $"Folder created successfully: {folderName}";
+            var filesList = await ListFilesAsync();
+            return View("Index", filesList);
+        }
+
+        [HttpGet("Files/Download/{*objectName}")]
         public async Task<IActionResult> DownloadFile(string objectName)
         {
             var memoryStream = new MemoryStream();
             await _storageClient.DownloadObjectAsync(_bucketName, objectName, memoryStream);
             memoryStream.Position = 0;
-            return File(memoryStream, "application/octet-stream", objectName);
+            return File(memoryStream, "application/octet-stream", Path.GetFileName(objectName));
+        }
+
+        [HttpPost("Files/Delete/{*objectName}")]
+        public async Task<IActionResult> DeleteFile(string objectName)
+        {
+            await _storageClient.DeleteObjectAsync(_bucketName, objectName);
+            ViewBag.Message = $"File deleted successfully: {objectName}";
+            var filesList = await ListFilesAsync();
+            return View("Index", filesList);
         }
 
         private async Task<IEnumerable<string>> ListFilesAsync()
