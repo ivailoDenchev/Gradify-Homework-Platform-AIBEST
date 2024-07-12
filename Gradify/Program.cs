@@ -1,3 +1,5 @@
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
 using Gradify.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// Google auth
+var credentialPath = Path.Combine(AppContext.BaseDirectory, "Credentials", "GoogleCredentials.json");
+var googleCredential = GoogleCredential.FromFile(credentialPath);
+var storageClient = StorageClient.Create(googleCredential);
+builder.Services.AddSingleton(storageClient);
 
 var app = builder.Build();
 
