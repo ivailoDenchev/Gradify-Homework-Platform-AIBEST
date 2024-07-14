@@ -4931,11 +4931,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ники младши\\Desktop\\Project\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
+      "projectUniqueName": "C:\\Users\\Ники младши\\Source\\Repos\\ivailoDenchev\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
       "projectName": "Gradify",
-      "projectPath": "C:\\Users\\Ники младши\\Desktop\\Project\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
+      "projectPath": "C:\\Users\\Ники младши\\Source\\Repos\\ivailoDenchev\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
       "packagesPath": "C:\\Users\\Ники младши\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ники младши\\Desktop\\Project\\Gradify-Homework-Platform-AIBEST\\Gradify\\obj\\",
+      "outputPath": "C:\\Users\\Ники младши\\Source\\Repos\\ivailoDenchev\\Gradify-Homework-Platform-AIBEST\\Gradify\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

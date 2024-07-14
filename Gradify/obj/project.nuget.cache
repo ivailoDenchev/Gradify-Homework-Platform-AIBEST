@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FKPIAvR8ISkvPr6lmAjflJnrwnMxG3fIpENWMayObxX9iFftQ8AjTMEqlMx+8t5iaaR14p1z9+rOcEV2LhfI9Q==",
+  "dgSpecHash": "qOXQKV+3F8Ke9iL0ktVFzJ9giqj5R4v2/VFmRlTa63ZuJTLQjbcERPNQd9BuGCfpRz8wLVNhd8AT0X65HhfSYQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ники младши\\Desktop\\Project\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
+  "projectFilePath": "C:\\Users\\Ники младши\\Source\\Repos\\ivailoDenchev\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ники младши\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Ники младши\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
