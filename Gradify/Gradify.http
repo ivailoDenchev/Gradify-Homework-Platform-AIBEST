@@ -1,6 +1,17 @@
 @Gradify_HostAddress = http://localhost:5135
 
-GET {{Gradify_HostAddress}}/weatherforecast/
+GET {{Gradify_HostAddress}}/api/files
 Accept: application/json
 
-###
+POST {{Gradify_HostAddress}}/api/files/upload?folder=test
+Content-Type: multipart/form-data
+Content-Disposition: form-data; name="file"; filename="testfile.txt"
+
+POST {{Gradify_HostAddress}}/api/files/create-folder?folderName=newfolder
+Accept: application/json
+
+GET {{Gradify_HostAddress}}/api/files/download/testfile.txt
+Accept: application/json
+
+DELETE {{Gradify_HostAddress}}/api/files/delete/testfile.txt
+Accept: application/json
