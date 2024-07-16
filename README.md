@@ -1,1 +1,0 @@
-# IvailoDenchev-Homework-Platform-AIBEST

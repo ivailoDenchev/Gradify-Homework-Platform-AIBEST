@@ -1,0 +1,17 @@
+@GradifyNetWebApi_HostAddress = http://localhost:5039
+
+GET {{GradifyNetWebApi_HostAddress}}/api/files
+Accept: application/json
+
+POST {{GradifyNetWebApi_HostAddress}}/api/files/upload?folder=test
+Content-Type: multipart/form-data
+Content-Disposition: form-data; name="file"; filename="testfile.txt"
+
+POST {{GradifyNetWebApi_HostAddress}}/api/files/create-folder?folderName=newfolder
+Accept: application/json
+
+GET {{GradifyNetWebApi_HostAddress}}/api/files/download/testfile.txt
+Accept: application/json
+
+DELETE {{GradifyNetWebApi_HostAddress}}/api/files/delete/testfile.txt
+Accept: application/json
