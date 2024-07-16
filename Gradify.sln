@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gradify", "Gradify\Gradify.csproj", "{D9B2D559-441D-4C89-B24B-A00BD4B7F99C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gradify", "Gradify\Gradify.csproj", "{11E28A98-8843-4E22-9F1E-5F728DDE3C35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D9B2D559-441D-4C89-B24B-A00BD4B7F99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9B2D559-441D-4C89-B24B-A00BD4B7F99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9B2D559-441D-4C89-B24B-A00BD4B7F99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9B2D559-441D-4C89-B24B-A00BD4B7F99C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11E28A98-8843-4E22-9F1E-5F728DDE3C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E28A98-8843-4E22-9F1E-5F728DDE3C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E28A98-8843-4E22-9F1E-5F728DDE3C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E28A98-8843-4E22-9F1E-5F728DDE3C35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BA1909B2-2EFA-493E-98C9-6AABF5E8AD33}
+		SolutionGuid = {D0596358-7351-4634-B187-FBA4D13C9362}
 	EndGlobalSection
 EndGlobal
