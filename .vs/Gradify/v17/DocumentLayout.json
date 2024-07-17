@@ -1,12 +1,53 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Pc\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\da23\\Gradify-Homework-Platform-AIBEST\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\Pc\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\FInal Project Gradify\\Gradify-Homework-Platform-AIBEST\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{11E28A98-8843-4E22-9F1E-5F728DDE3C35}|Gradify\\Gradify.csproj|c:\\users\\pc\\onedrive\\\u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\final project gradify\\gradify-homework-platform-aibest\\gradify\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{11E28A98-8843-4E22-9F1E-5F728DDE3C35}|Gradify\\Gradify.csproj|solutionrelative:gradify\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{11E28A98-8843-4E22-9F1E-5F728DDE3C35}|Gradify\\Gradify.csproj|c:\\users\\pc\\onedrive\\\u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\final project gradify\\gradify-homework-platform-aibest\\gradify\\gradify.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{11E28A98-8843-4E22-9F1E-5F728DDE3C35}|Gradify\\Gradify.csproj|solutionrelative:gradify\\gradify.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Gradify.csproj",
+              "DocumentMoniker": "C:\\Users\\Pc\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\FInal Project Gradify\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
+              "RelativeDocumentMoniker": "Gradify\\Gradify.csproj",
+              "ToolTip": "C:\\Users\\Pc\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\FInal Project Gradify\\Gradify-Homework-Platform-AIBEST\\Gradify\\Gradify.csproj",
+              "RelativeToolTip": "Gradify\\Gradify.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-07-17T13:30:18.035Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Pc\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\FInal Project Gradify\\Gradify-Homework-Platform-AIBEST\\Gradify\\Program.cs",
+              "RelativeDocumentMoniker": "Gradify\\Program.cs",
+              "ToolTip": "C:\\Users\\Pc\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0438\\FInal Project Gradify\\Gradify-Homework-Platform-AIBEST\\Gradify\\Program.cs",
+              "RelativeToolTip": "Gradify\\Program.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAAAB4AAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-17T13:29:10.92Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

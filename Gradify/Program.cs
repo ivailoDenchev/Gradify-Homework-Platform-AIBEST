@@ -1,5 +1,8 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services
+.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("AppDb"));
+
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddApiEndpoints();
+
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
 
 // Configure logging
 var logger = LoggerFactory.Create(config =>
@@ -43,6 +55,16 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.MapIdentityApi<IdentityUser>();
+
+
 app.MapControllers();
 
 app.Run();
+
+class AppDbContext : IdentityDbContext<IdentityUser>
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+}
+
+
