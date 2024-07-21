@@ -1,5 +1,47 @@
 @Gradify_HostAddress = http://localhost:5135
 
+### Register a new user
+POST {{Gradify_HostAddress}}/api/auth/register?role=Student
+Content-Type: application/json
+
+{
+  "Username": "newuser",
+  "Email": "newuser@example.com",
+  "Password": "Password123!"
+}
+
+### Login to get a token
+POST {{Gradify_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "Username": "newuser",
+  "Password": "Password123!"
+}
+
+### Reset password
+POST {{Gradify_HostAddress}}/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "Email": "newuser@example.com",
+  "NewPassword": "NewPassword123!"
+}
+
+### Update email (Requires Bearer Token)
+PUT {{Gradify_HostAddress}}/api/auth/update-email
+Content-Type: application/json
+Authorization: Bearer <your_token_here>
+
+{
+  "NewEmail": "updatedemail@example.com"
+}
+
+### Delete account (Requires Bearer Token)
+DELETE {{Gradify_HostAddress}}/api/auth/delete-account
+Authorization: Bearer <your_token_here>
+
+### File endpoints
 GET {{Gradify_HostAddress}}/api/files
 Accept: application/json
 
