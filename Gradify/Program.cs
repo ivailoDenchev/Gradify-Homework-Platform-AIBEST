@@ -1,14 +1,21 @@
+using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Gradify.Models;
 using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Storage.V1;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+using Gradify.Services;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Gradify;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +44,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
@@ -87,6 +94,8 @@ else
     logger.LogWarning("Google credentials not found, hosting APIs will not be available.");
 }
 
+builder.Services.AddTransient<StorageClassSyncService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -104,7 +113,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Create Roles
+// Create Roles and synchronize classes with storage
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -117,11 +126,9 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new IdentityRole(roleName));
         }
     }
+
+    var classSyncService = scope.ServiceProvider.GetRequiredService<StorageClassSyncService>();
+    await classSyncService.SyncClassesAsync();
 }
 
 app.Run();
-
-class AppDbContext : IdentityDbContext<IdentityUser>
-{
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-}

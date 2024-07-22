@@ -1,6 +1,13 @@
 ﻿using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Gradify.Models;
 
 namespace Gradify.Controllers
 {
@@ -12,19 +19,46 @@ namespace Gradify.Controllers
         private readonly string _bucketName = "homeworkplatformdrive-429008.appspot.com";
         private readonly StorageClient _storageClient;
         private readonly ILogger<FilesController> _logger;
+        private readonly AppDbContext _context;
 
-        public FilesController(StorageClient storageClient, ILogger<FilesController> logger)
+        public FilesController(StorageClient storageClient, ILogger<FilesController> logger, AppDbContext context)
         {
             _storageClient = storageClient;
             _logger = logger;
+            _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ListFiles()
+        [HttpGet("classes")]
+        public async Task<IActionResult> GetAllClasses()
         {
             try
             {
-                var files = await ListFilesAsync();
+                var classes = await _context.Classes.ToListAsync();
+                return Ok(classes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving classes.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpGet("{classId}")]
+        public async Task<IActionResult> ListClassFiles(string classId)
+        {
+            var classEntity = await _context.Classes.FindAsync(classId);
+            if (classEntity == null)
+            {
+                return NotFound("Class not found.");
+            }
+
+            try
+            {
+                var files = new List<string>();
+                await foreach (var storageObject in _storageClient.ListObjectsAsync(_bucketName, classEntity.Id))
+                {
+                    files.Add(storageObject.Name);
+                }
                 return Ok(files);
             }
             catch (Exception ex)
@@ -35,8 +69,14 @@ namespace Gradify.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile(IFormFile file, [FromQuery] string folder)
+        public async Task<IActionResult> UploadFile(IFormFile file, [FromQuery] string classId)
         {
+            var classEntity = await _context.Classes.FindAsync(classId);
+            if (classEntity == null)
+            {
+                return NotFound("Class not found.");
+            }
+
             try
             {
                 if (file == null || file.Length == 0)
@@ -44,7 +84,7 @@ namespace Gradify.Controllers
                     return BadRequest("No file uploaded.");
                 }
 
-                var objectName = !string.IsNullOrEmpty(folder) ? $"{folder}/{file.FileName}" : file.FileName;
+                var objectName = $"{classEntity.Id}/{file.FileName}";
                 using (var stream = new MemoryStream())
                 {
                     await file.CopyToAsync(stream);
@@ -86,12 +126,19 @@ namespace Gradify.Controllers
             }
         }
 
-        [HttpGet("download/{*objectName}")]
-        public async Task<IActionResult> DownloadFile(string objectName)
+        [HttpGet("download/{classId}/{*fileName}")]
+        public async Task<IActionResult> DownloadFile(string classId, string fileName)
         {
+            var classEntity = await _context.Classes.FindAsync(classId);
+            if (classEntity == null)
+            {
+                return NotFound("Class not found.");
+            }
+
             try
             {
                 var memoryStream = new MemoryStream();
+                var objectName = $"{classEntity.Id}/{fileName}";
                 await _storageClient.DownloadObjectAsync(_bucketName, objectName, memoryStream);
                 memoryStream.Position = 0;
                 return File(memoryStream, "application/octet-stream", Path.GetFileName(objectName));
@@ -103,11 +150,18 @@ namespace Gradify.Controllers
             }
         }
 
-        [HttpDelete("delete/{*objectName}")]
-        public async Task<IActionResult> DeleteFile(string objectName)
+        [HttpDelete("delete/{classId}/{*fileName}")]
+        public async Task<IActionResult> DeleteFile(string classId, string fileName)
         {
+            var classEntity = await _context.Classes.FindAsync(classId);
+            if (classEntity == null)
+            {
+                return NotFound("Class not found.");
+            }
+
             try
             {
+                var objectName = $"{classEntity.Id}/{fileName}";
                 await _storageClient.DeleteObjectAsync(_bucketName, objectName);
                 return Ok($"File deleted successfully: {objectName}");
             }
@@ -116,16 +170,6 @@ namespace Gradify.Controllers
                 _logger.LogError(ex, "Error deleting file.");
                 return StatusCode(500, "Internal server error.");
             }
-        }
-
-        private async Task<IEnumerable<string>> ListFilesAsync()
-        {
-            var files = new List<string>();
-            await foreach (var storageObject in _storageClient.ListObjectsAsync(_bucketName))
-            {
-                files.Add(storageObject.Name);
-            }
-            return files;
         }
     }
 }
