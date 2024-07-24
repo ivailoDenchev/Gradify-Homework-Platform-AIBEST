@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Gradify;
+using Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +50,10 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("AppDb"));
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("AppDb"));
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -88,13 +92,13 @@ if (File.Exists(credentialPath))
     var googleCredential = GoogleCredential.FromFile(credentialPath);
     var storageClient = StorageClient.Create(googleCredential);
     builder.Services.AddSingleton(storageClient);
+    builder.Services.AddTransient<StorageClassSyncService>();
+
 }
 else
 {
     logger.LogWarning("Google credentials not found, hosting APIs will not be available.");
 }
-
-builder.Services.AddTransient<StorageClassSyncService>();
 
 var app = builder.Build();
 
@@ -126,9 +130,11 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new IdentityRole(roleName));
         }
     }
-
-    var classSyncService = scope.ServiceProvider.GetRequiredService<StorageClassSyncService>();
-    await classSyncService.SyncClassesAsync();
+    if (File.Exists(credentialPath))
+    {
+        var classSyncService = scope.ServiceProvider.GetRequiredService<StorageClassSyncService>();
+        await classSyncService.SyncClassesAsync();
+    }
 }
 
 app.Run();
