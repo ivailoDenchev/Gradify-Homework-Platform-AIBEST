@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gradify.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240724053907_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240724102358_GradifyDatabase")]
+    partial class GradifyDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
