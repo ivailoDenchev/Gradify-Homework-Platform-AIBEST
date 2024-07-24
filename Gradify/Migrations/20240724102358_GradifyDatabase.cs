@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gradify.Migrations
 {
-    /// <inheritdoc />
-    public partial class InitialCreate : Migration
+
+    public partial class GradifyDatabase : Migration
     {
-        /// <inheritdoc />
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -51,6 +51,19 @@ namespace Gradify.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -61,6 +74,12 @@ namespace Gradify.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +93,12 @@ namespace Gradify.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teachers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Teachers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,24 +233,85 @@ namespace Gradify.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClassFiles",
+                name: "Enrollments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FileName = table.Column<string>(type: "TEXT", nullable: false),
-                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    UploadedByUserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClassId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClassId1 = table.Column<string>(type: "TEXT", nullable: false)
+                    StudentId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClassId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassFiles", x => x.Id);
+                    table.PrimaryKey("PK_Enrollments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClassFiles_Classes_ClassId1",
-                        column: x => x.ClassId1,
+                        name: "FK_Enrollments_Classes_ClassId",
+                        column: x => x.ClassId,
                         principalTable: "Classes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Enrollments_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeworkAssignments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClassId = table.Column<int>(nullable: false),
+                    TeacherId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 500, nullable: true),
+                    DueDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeworkAssignments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HomeworkAssignments_Classes_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Classes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HomeworkAssignments_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubmittedHomeworks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HomeworkAssignmentId = table.Column<int>(nullable: false),
+                    StudentId = table.Column<int>(nullable: false),
+                    SubmissionDate = table.Column<DateTime>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    Grade = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubmittedHomeworks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubmittedHomeworks_HomeworkAssignments_HomeworkAssignmentId",
+                        column: x => x.HomeworkAssignmentId,
+                        principalTable: "HomeworkAssignments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubmittedHomeworks_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -234,12 +320,6 @@ namespace Gradify.Migrations
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -278,9 +358,44 @@ namespace Gradify.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassFiles_ClassId1",
-                table: "ClassFiles",
-                column: "ClassId1");
+                name: "IX_Enrollments_ClassId",
+                table: "Enrollments",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enrollments_StudentId",
+                table: "Enrollments",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeworkAssignments_ClassId",
+                table: "HomeworkAssignments",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeworkAssignments_TeacherId",
+                table: "HomeworkAssignments",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_UserId",
+                table: "Students",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubmittedHomeworks_HomeworkAssignmentId",
+                table: "SubmittedHomeworks",
+                column: "HomeworkAssignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubmittedHomeworks_StudentId",
+                table: "SubmittedHomeworks",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_UserId",
+                table: "Teachers",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -302,13 +417,16 @@ namespace Gradify.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ClassFiles");
+                name: "Enrollments");
+
+            migrationBuilder.DropTable(
+                name: "SubmittedHomeworks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "HomeworkAssignments");
 
             migrationBuilder.DropTable(
                 name: "Classes");
@@ -318,6 +436,12 @@ namespace Gradify.Migrations
 
             migrationBuilder.DropTable(
                 name: "Teachers");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }
