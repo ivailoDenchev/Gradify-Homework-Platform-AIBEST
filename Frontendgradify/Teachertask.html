@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Task Posting Page</title>
+    
+    <link rel="stylesheet" href="teacher.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Gradify</div>
+            <nav>
+                <ul>
+                    <li><a href="">Solutions</a></li>
+                    <li><a href="">Forum</a></li>
+                    <li><a href="">Resources</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="settings">
+                <img src="USERICON.png" alt="Settings">
+            </div>
+        </header>
+
+        <div class="task-form">
+            <form id="taskForm">
+                <label for="taskName">Име на задача:</label>
+                <input type="text" id="taskName" name="taskName" required>
+                
+                <label for="taskType">Тип:</label>
+                <select id="taskType" name="taskType" required>
+                    <option value="Домашно">Домашно</option>
+                    <option value="Тест">Тест</option>
+                    <option value="Проект">Проект</option>
+                </select>
+
+                <label for="taskStatus">Статус:</label>
+                <select id="taskStatus" name="taskStatus" required>
+                    <option value="Активен">Активен</option>
+                    <option value="Неактивен">Неактивен</option>
+                   
+                </select>
+
+                <label for="taskSubject">Предмет:</label>
+                <select id="taskSubject" name="taskSubject" required>
+                    <option value="">Изберете (предмет)</option>
+                    <option value="">Математика</option>
+                    <option value="">Български Език</option>
+                    <option value="">Литература</option>
+                    <option value="">Химия</option>
+                    <option value="">Биология</option>
+                    <option value="">Английски език</option>
+                    <option value="">Физика</option>
+                    <option value="">Информатика</option>
+                </select>
+
+                <label for="taskClass">Клас:</label>
+                <input type="text" id="taskClass" name="taskClass" required>
+                
+                <label for="taskFile">Прикачен файл:</label>
+                <input type="file" id="taskFile" name="taskFile">
+                
+                <button type="submit">Публикувай задача</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
