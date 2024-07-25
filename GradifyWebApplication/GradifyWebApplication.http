@@ -1,0 +1,58 @@
+@GradifyWebApplication_HostAddress = http://localhost:5118
+
+
+### Register a New User
+POST {{GradifyWebApplication_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "email": "newuser@example.com",
+    "password": "Password123!",
+    "role": "Student" // Specify role here
+}
+
+### Login
+POST {{GradifyWebApplication_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "password": "Password123!"
+}
+
+### Request Password Reset
+POST {{GradifyWebApplication_HostAddress}}/api/auth/request-password-reset
+Content-Type: application/json
+
+{
+    "email": "newuser@example.com"
+}
+
+### Reset Password
+POST {{GradifyWebApplication_HostAddress}}/api/auth/reset-password
+Content-Type: application/json
+
+{
+    "email": "newuser@example.com",
+    "token": "PASTE_YOUR_TOKEN_HERE",
+    "newPassword": "NewPassword123!"
+}
+
+### Update Email
+POST {{GradifyWebApplication_HostAddress}}/api/auth/update-email
+Content-Type: application/json
+Authorization: Bearer PASTE_YOUR_JWT_TOKEN_HERE
+
+{
+    "newEmail": "updateduser@example.com"
+}
+
+### Delete Account (Admin Only)
+POST {{GradifyWebApplication_HostAddress}}/api/auth/delete-account
+Content-Type: application/json
+Authorization: Bearer PASTE_YOUR_JWT_TOKEN_HERE
+
+{
+    "username": "targetuser"
+}
