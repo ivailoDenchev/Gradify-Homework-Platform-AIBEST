@@ -9,7 +9,6 @@
         public string TeacherId { get; set; }
         public DateTime DateAssigned { get; set; }
 
-        // Navigation properties
         public virtual ApplicationUser Student { get; set; }
         public virtual ApplicationUser Teacher { get; set; }
     }

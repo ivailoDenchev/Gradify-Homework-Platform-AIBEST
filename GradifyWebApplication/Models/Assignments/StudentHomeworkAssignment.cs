@@ -10,7 +10,6 @@
         public string? SubmissionUrl { get; set; }
         public DateTime? SubmissionDate { get; set; }
 
-        // Navigation properties
         public virtual ApplicationUser Student { get; set; }
         public virtual Homework Homework { get; set; }
     }
