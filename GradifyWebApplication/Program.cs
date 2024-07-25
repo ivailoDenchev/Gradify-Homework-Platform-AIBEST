@@ -44,9 +44,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Amazon
-builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
-
 // Configure Entity Framework and Identity to use SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -71,7 +68,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Issuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        NameClaimType = ClaimTypes.Name // Ensure this is set to ClaimTypes.Name
+        NameClaimType = ClaimTypes.Name
     };
 });
 

@@ -69,7 +69,7 @@ namespace GradifyWebApplication.Controllers
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            // we dont have the budget for email so were just returning the token
+            // we dont have the budget for email services so were just returning the token
             return Ok(new { token });
         }
 
@@ -146,13 +146,31 @@ namespace GradifyWebApplication.Controllers
             return Ok(users);
         }
 
+        [HttpGet("user-id/{username}")]
+        [Authorize(Roles = "Admin,Teacher,Student")]
+        public async Task<IActionResult> GetUserIdByUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return BadRequest("Username must be provided.");
+            }
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(new { UserId = user.Id });
+        }
+
         private string GenerateJwtToken(ApplicationUser user)
         {
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),new Claim(JwtRegisteredClaimNames.Sub, user.UserName), // Include the username
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, user.UserName), //ensure User.Identity.Name gets set
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Role, _userManager.GetRolesAsync(user).Result.FirstOrDefault())
             };
 

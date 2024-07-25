@@ -1,0 +1,21 @@
+
+{
+    "region" : "eu-central-1",
+    "profile" : "Gradify",
+    "configuration" : "Release",
+    "framework"     : "net8.0",
+    "function-name" : "Gradify-Api-Vs",
+    "function-description" : "Web API's for gradify school project",
+    "package-type"         : "Zip",
+    "function-handler"     : "GradifyWebApplication",
+    "function-memory-size" : 256,
+    "function-role"        : "arn:aws:iam::009160048855:role/lambda_exec_Gradify-Api-Vs",
+    "function-timeout"     : 15,
+    "function-runtime"     : "dotnet8",
+    "function-architecture" : "x86_64",
+    "function-subnets"      : "",
+    "function-security-groups" : "",
+    "tracing-mode"             : "PassThrough",
+    "environment-variables"    : "\"ASPNETCORE_ENVIRONMENT\"=\"Development\"",
+    "image-tag"                : ""
+}
